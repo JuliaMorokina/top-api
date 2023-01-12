@@ -1,4 +1,5 @@
 export class ProductModel {
+  _id: string;
   advantages: string;
   calculatedRaiting: number;
   characteristics: {
