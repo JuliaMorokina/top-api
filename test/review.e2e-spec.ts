@@ -7,6 +7,7 @@ import { disconnect, Types } from 'mongoose';
 import { REVIEW_NOT_FOUND } from '../src/review/review.contsants';
 
 const productId = new Types.ObjectId().toHexString();
+const productId2 = new Types.ObjectId().toHexString();
 const randomId = new Types.ObjectId().toHexString();
 
 const testDto: CreateReviewDto = {
@@ -39,6 +40,17 @@ describe('AppController (e2e)', () => {
         createdId = body._id;
         expect(createdId).toBeDefined();
       });
+  });
+
+  it('/review/create (POST) - fail', () => {
+    return request(app.getHttpServer())
+      .post('/review/create')
+      .send({
+        ...testDto,
+        productId: productId2,
+        raiting: 0,
+      })
+      .expect(400);
   });
 
   it('/review/by-product/:productId (GET) - success', async () => {
