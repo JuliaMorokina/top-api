@@ -19,7 +19,7 @@ const testDto: CreateReviewDto = {
   description: 'test',
   name: 'Test',
   productId,
-  raiting: 5,
+  rating: 5,
   title: 'Test',
 };
 
@@ -60,7 +60,7 @@ describe('AppController (e2e)', () => {
       .send({
         ...testDto,
         productId: productId2,
-        raiting: 0,
+        rating: 0,
       })
       .expect(400);
   });
