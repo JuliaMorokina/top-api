@@ -10,7 +10,7 @@ export class CreateReviewDto {
   @Max(5)
   @Min(1, { message: 'Рейтинг не может быть менее 1' })
   @IsNumber()
-  raiting: number;
+  rating: number;
 
   @IsString()
   productId: string;
