@@ -83,4 +83,15 @@ export class TopPageController {
   async find(@Body() { firstCategory }: FindTopPageDto) {
     return this.topPageService.find(firstCategory);
   }
+
+  @Get('search/:text')
+  async textSearch(@Param('text') text: string) {
+    const topPage = await this.topPageService.findByText(text);
+
+    if (!topPage) {
+      throw new NotFoundException(TOP_PAGE_NOT_FOUND_ERROR);
+    }
+
+    return topPage;
+  }
 }

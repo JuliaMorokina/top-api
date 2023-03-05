@@ -15,12 +15,24 @@ export class TopPageService {
     return this.topPageModel.create(dto);
   }
 
-  async findById(id: string) {
-    return this.topPageModel.findById(id).exec();
+  async find(firstCategory: TopLevelCategory) {
+    return this.topPageModel
+      .find({ firstCategory }, { alias: 1, secondCategory: 1, title: 1 })
+      .exec();
   }
 
   async findByAlias(alias: string) {
     return this.topPageModel.findOne({ alias }).exec();
+  }
+
+  async findById(id: string) {
+    return this.topPageModel.findById(id).exec();
+  }
+
+  async findByText(text: string) {
+    return this.topPageModel
+      .find({ $text: { $search: text, $caseSensitive: false } })
+      .exec();
   }
 
   async delete(id: string) {
@@ -29,11 +41,5 @@ export class TopPageService {
 
   async update(id: string, dto: CreateTopPageDto) {
     return this.topPageModel.findByIdAndUpdate(id, dto, { new: true });
-  }
-
-  async find(firstCategory: TopLevelCategory) {
-    return this.topPageModel
-      .find({ firstCategory }, { alias: 1, secondCategory: 1, title: 1 })
-      .exec();
   }
 }
