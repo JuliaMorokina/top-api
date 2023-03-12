@@ -10,9 +10,10 @@ jobs:
     steps:
       - uses: actions/checkout@main
       - name: Publish to registy
-        uses: docker/login-action@v1
+        uses: elgohr/Publish-Docker-Github-Action@v5
         with:
-          registry: ghcr.io
+          name: ghcr.io/JuliaMorokina/top-api/top-api
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
+          registry: ghcr.io
           tags: "develop"
