@@ -10,7 +10,7 @@ jobs:
     steps:
       - uses: actions/checkout@main
       - name: Publish to registry
-        uses: elgohr/Publish-Docker-Github-Action@master
+        uses: elgohr/Publish-Docker-Github-Action@v4
         with:
           registry: ghcr.io
           name: ghcr.io/JuliaMorokina/top-api/top-api
