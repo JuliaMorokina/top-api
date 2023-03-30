@@ -12,7 +12,9 @@ import {
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
+import { Cron, CronExpression } from '@nestjs/schedule';
 import { JwtAuthGuard } from 'src/auth/guards/jwt.guard';
+import { HhService } from 'src/hh/hh.service';
 import { IdValidationPipe } from 'src/pipes/id-validation.pipe';
 import { CreateTopPageDto } from './dto/create-top-page.dto';
 import { FindTopPageDto } from './dto/find-top-page.dto';
@@ -22,7 +24,10 @@ import { TopPageService } from './top-page.service';
 
 @Controller('top-page')
 export class TopPageController {
-  constructor(private readonly topPageService: TopPageService) {}
+  constructor(
+    private readonly topPageService: TopPageService,
+    private readonly hhService: HhService,
+  ) {}
 
   @UseGuards(JwtAuthGuard)
   @Post('create')
@@ -93,5 +98,17 @@ export class TopPageController {
     }
 
     return topPage;
+  }
+
+  @Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT, { name: 'test' })
+  async test() {
+    const data = await this.topPageService.findForHhUpdate(new Date());
+
+    for (const page of data) {
+      const hhData = await this.hhService.getData(page.category);
+      page.hh = hhData;
+
+      await this.topPageService.update(page._id, page);
+    }
   }
 }
